@@ -1,57 +1,28 @@
-window.onload = function (){
-	
-	var findCountry = document.getElementById("lookup").addEventListener("click",birthPlace);
-	var findCity = document.getElementById("city").addEventListener("click",City);
+window.onload = function() {
+    let firstbuttton = document.getElementById("lookup");
+    let secondbuttton = document.getElementById("lookup2");
+    let countryinfo = document.getElementById("country");
+    let result = document.getElementById("result");
 
-	function birthPlace() {
+    firstbuttton.addEventListener('click',function(){
+        var httpRequest = new XMLHttpRequest();
+        let countrydata = countryinfo.value;
+        httpRequest.open('GET',"http://localhost/info2180-lab5/world.php?country=" +  countrydata + "&context=none" );
+        httpRequest.send();
+        httpRequest.onreadystatechange = function(){
+            let response = httpRequest.responseText;
+            result.innerHTML = response;
+        }
+    });
 
-		var input = document.getElementById("country").value;
-
-		//Value is formatted to ensure the request is completed as long as the country is correctly spelled
-		var country = input.charAt(0).toUpperCase() + input.toLowerCase().slice(1);
-		//console.log(country);
-		var httpRequest = new XMLHttpRequest();
-		var url = "world.php";
-
-		httpRequest.onreadystatechange = function (){
-			if (httpRequest.readyState === XMLHttpRequest.DONE) {
-			 	if (httpRequest.status === 200) {
-			 		var response = httpRequest.responseText;
-		 			document.getElementById("result").innerHTML=response;
-
-			 	} else {
-			 		alert('There was a problem with the request.');
-			 	}
-			}
-		};
-		httpRequest.open('GET', url+"?country="+country);
-		httpRequest.send();		
-	}
-
-	function City() {
-
-		var input = document.getElementById("country").value;
-
-		//Value is formatted to ensure the request is completed as long as the country is correctly spelled
-		var country = input.charAt(0).toUpperCase() + input.toLowerCase().slice(1);
-		var city = "&context=cities";
-		//console.log(country);
-		var httpRequest = new XMLHttpRequest();
-		var url = "world.php";
-
-		httpRequest.onreadystatechange = function (){
-			if (httpRequest.readyState === XMLHttpRequest.DONE) {
-			 	if (httpRequest.status === 200) {
-			 		var response = httpRequest.responseText;
-		 			document.getElementById("result").innerHTML=response;
-
-			 	} else {
-			 		alert('There was a problem with the request.');
-			 	}
-			}
-		};
-		httpRequest.open('GET', url+"?country="+country+city);
-		httpRequest.send();		
-	}
-
+    secondbuttton.addEventListener('click',function(){
+        var httpRequest = new XMLHttpRequest();
+        let countrydata = countryinfo.value;
+        httpRequest.open('GET',"http://localhost/info2180-lab5/world.php?country=" +  countrydata + "&context=cities");
+        httpRequest.send();
+        httpRequest.onreadystatechange = function(){
+            let response = httpRequest.responseText;
+            result.innerHTML = response;
+        }
+    })
 }
